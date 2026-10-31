@@ -20,3 +20,25 @@ Content-Type: application/json
 
 ### Eliminar alumno: 204
 DELETE {{baseUrl}}/alumnos/1
+### Body inválido: 400 con campos
+POST {{baseUrl}}/alumnos
+Content-Type: application/json
+
+{"matricula":"","nombre":"A","correo":"no-es-correo"}
+
+### Matrícula duplicada: ejecutar dos veces para obtener 409
+POST {{baseUrl}}/alumnos
+Content-Type: application/json
+
+{"matricula":"A001","nombre":"Otra persona","correo":"otra@universidad.mx"}
+
+### Intentar registrar un alumno con espacios internos en la matrícula (Debe fallar con 400 Bad Request)
+POST http://localhost:8080/api/alumnos
+Content-Type: application/json
+
+{
+  "matricula": "AB 1234",
+  "nombre": "Juan Pérez"
+}
+
+### Respuesta esperada: HTTP 400 Bad Request (conservando el código de error actual de validación)
